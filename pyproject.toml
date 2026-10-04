@@ -1,0 +1,39 @@
+[project]
+name = "rag-vs-long-context"
+version = "0.1.0"
+description = "Sunday AI Builds 03: tenant-isolated document retrieval experiments"
+requires-python = ">=3.13"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.34,<1",
+  "httpx>=0.28,<1",
+  "pydantic-settings>=2.8,<3",
+  "sqlalchemy>=2.0,<2.1",
+  "psycopg[binary]>=3.2,<4",
+  "pgvector>=0.4,<1",
+  "alembic>=1.16,<2",
+  "streamlit>=1.57,<2",
+  "cryptography>=45",
+  "pypdf>=6,<7",
+  "pdfplumber>=0.11,<1",
+  "pypdfium2>=4.30,<6",
+  "pytesseract>=0.3.13,<1",
+  "pillow>=11,<13",
+  "langchain-core>=1.6.5",
+  "langchain-text-splitters>=1.1.2",
+  "langchain-ollama>=1.1.0",
+  "tiktoken>=0.14.0",
+  "prometheus-client>=0.26.0",
+  "redis>=8.1.0",
+]
+[dependency-groups]
+dev = ["pytest>=8.3,<10", "ruff>=0.11,<1", "reportlab>=4.3,<5"]
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+markers = ["integration: isolated PostgreSQL + pgvector required"]
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+[tool.ruff.lint]
+select = ["E", "F", "I"]

@@ -1,0 +1,46 @@
+# Optional local visual extraction. Use with -f docker-compose.yml -f docker-compose.vision.yml.
+services:
+  parser:
+    environment:
+      PDF_VISION_MODEL: qwen2.5vl:3b
+    networks: [parser_net, vision_net]
+    depends_on:
+      vision: {condition: service_healthy}
+  vision:
+    image: ollama/ollama:0.11.11
+    mem_limit: 12g
+    cpus: 4.0
+    pids_limit: 256
+    environment:
+      OLLAMA_NO_CLOUD: '1'
+      OLLAMA_NUM_PARALLEL: '1'
+      OLLAMA_MAX_LOADED_MODELS: '1'
+    networks: [vision_net]
+    volumes: [vision_models:/root/.ollama]
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: {max-size: '20m', max-file: '5'}
+    healthcheck:
+      test: [CMD, ollama, show, 'qwen2.5vl:3b']
+      interval: 10s
+      timeout: 5s
+      retries: 30
+  vision-download:
+    image: ollama/ollama:0.11.11
+    profiles: [model-download]
+    networks: [frontend]
+    volumes: [vision_models:/root/.ollama]
+    entrypoint: [/bin/sh, /download-model.sh]
+    configs:
+      - source: download_model
+        target: /download-model.sh
+    restart: 'no'
+configs:
+  download_model:
+    file: ./docker/download-vision.sh
+networks:
+  vision_net:
+    internal: true
+volumes:
+  vision_models:

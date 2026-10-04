@@ -1,0 +1,9 @@
+[
+  {"id":"core-functions","kind":"prose","question":"What are the four AI RMF core functions?","expected_facts":["GOVERN","MAP","MEASURE","MANAGE"],"fixture_pages":[6]},
+  {"id":"cross-cutting","kind":"diagram-and-prose","question":"Which function is cross-cutting and enables the other functions?","expected_facts":["GOVERN"],"fixture_pages":[6,7]},
+  {"id":"legal-obligations","kind":"table","question":"Which GOVERN subcategory addresses legal and regulatory requirements?","expected_facts":["GOVERN 1.1"],"fixture_pages":[7]},
+  {"id":"periodic-review","kind":"continued-table","question":"Which GOVERN subcategory addresses ongoing monitoring and periodic review?","expected_facts":["GOVERN 1.5"],"fixture_pages":[8]},
+  {"id":"trustworthiness","kind":"scanned-page","question":"Name the condition that forms the base of the trustworthy AI characteristics in Figure 4.","expected_facts":["valid","reliable"],"fixture_pages":[5],"human_review_required":true},
+  {"id":"mapping-purpose","kind":"scanned-table","question":"Which MAP subcategory establishes intended purposes, potentially beneficial uses, and context-specific laws?","expected_facts":["MAP 1.1"],"fixture_pages":[9]},
+  {"id":"missing-fact","kind":"unanswerable","question":"What was the exact dollar cost of NIST's cloud inference bill in August 2026?","expected_facts":[],"fixture_pages":[],"human_review_required":true,"rubric":"Must abstain; this number is absent from the selected source."}
+]

@@ -1,0 +1,27 @@
+groups:
+  - name: rag-lab
+    rules:
+      - alert: RagServiceDown
+        expr: up == 0
+        for: 2m
+        labels: {severity: critical}
+        annotations: {summary: 'A monitored RAG service is unavailable'}
+      - alert: RagNoWorkers
+        expr: absent(up{job="workers"}) or sum(up{job="workers"}) == 0
+        for: 2m
+        labels: {severity: critical}
+        annotations: {summary: 'No worker replicas are being scraped successfully'}
+      - alert: RagQueueStalled
+        expr: rag_queue_oldest_seconds > 300
+        for: 2m
+        labels: {severity: warning}
+        annotations: {summary: 'An ingestion or experiment job has waited more than five minutes'}
+      - alert: RagWorkerFailures
+        expr: sum(increase(rag_jobs_total{outcome="failed"}[10m])) > 0
+        labels: {severity: warning}
+        annotations: {summary: 'Worker failures occurred in the last ten minutes'}
+      - alert: RagDatabaseUnavailable
+        expr: rag_database_ready == 0
+        for: 1m
+        labels: {severity: critical}
+        annotations: {summary: 'Dispatcher cannot access its dependencies'}

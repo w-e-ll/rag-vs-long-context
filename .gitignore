@@ -1,0 +1,25 @@
+.env
+.env.*
+!.env.example
+.demo-credentials.json
+.venv/
+.idea/
+var/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+work/
+
+# Local credentials, runtime exports and editor/OS files
+.streamlit/secrets.toml
+*.log
+*.sqlite
+*.sqlite3
+.DS_Store
+Thumbs.db
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/

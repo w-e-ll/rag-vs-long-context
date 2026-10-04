@@ -1,0 +1,10 @@
+# NVIDIA Docker Desktop/WSL2 support must already work. CPU fallback: omit this file.
+services:
+  vision:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

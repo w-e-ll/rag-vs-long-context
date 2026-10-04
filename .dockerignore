@@ -1,0 +1,13 @@
+.env
+.demo-credentials.json
+.venv
+.idea
+.git
+var
+work
+__pycache__
+**/__pycache__
+**/*.pyc
+**/*.pyo
+.pytest_cache
+.ruff_cache

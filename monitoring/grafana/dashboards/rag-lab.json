@@ -1,0 +1,205 @@
+{
+  "uid": "rag-lab",
+  "title": "Sunday AI Builds 03 - Operations",
+  "schemaVersion": 39,
+  "version": 2,
+  "refresh": "10s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 9,
+      "type": "timeseries",
+      "title": "Visual extraction outcomes / second",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"x": 0, "y": 32, "w": 12, "h": 8},
+      "targets": [{"expr": "sum by(outcome)(rate(rag_pdf_vision_pages_total[5m]))", "refId": "A", "legendFormat": "{{outcome}}"}]
+    },
+    {
+      "id": 10,
+      "type": "timeseries",
+      "title": "Visual extraction p95 seconds",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"x": 12, "y": 32, "w": 12, "h": 8},
+      "targets": [{"expr": "histogram_quantile(0.95, sum by(le)(rate(rag_pdf_vision_seconds_bucket[5m])))", "refId": "A"}]
+    },
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Service availability",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "expr": "up",
+          "refId": "A",
+          "legendFormat": "{{job}} {{stage}} {{kind}} {{outcome}} {{route}}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Queue depth by stage",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "expr": "rag_queue_depth",
+          "refId": "A",
+          "legendFormat": "{{job}} {{stage}} {{kind}} {{outcome}} {{route}}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Oldest queued job (seconds)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "expr": "rag_queue_oldest_seconds",
+          "refId": "A",
+          "legendFormat": "{{job}} {{stage}} {{kind}} {{outcome}} {{route}}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Worker outcomes / second",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "expr": "sum by(kind,outcome)(rate(rag_jobs_total[5m]))",
+          "refId": "A",
+          "legendFormat": "{{job}} {{stage}} {{kind}} {{outcome}} {{route}}"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Stage p95 latency (seconds)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum by(stage,le)(rate(rag_stage_seconds_bucket[5m])))",
+          "refId": "A",
+          "legendFormat": "{{job}} {{stage}} {{kind}} {{outcome}} {{route}}"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "HTTP p95 latency (seconds)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum by(route,le)(rate(rag_http_seconds_bucket[5m])))",
+          "refId": "A",
+          "legendFormat": "{{job}} {{stage}} {{kind}} {{outcome}} {{route}}"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "timeseries",
+      "title": "API 5xx rate",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(rag_http_requests_total{status=~\"5..\"}[5m])) / clamp_min(sum(rate(rag_http_requests_total[5m])),0.001)",
+          "refId": "A",
+          "legendFormat": "{{job}} {{stage}} {{kind}} {{outcome}} {{route}}"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "timeseries",
+      "title": "Embedding reuse / second",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 24,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(rag_embedding_reused_total[5m]))",
+          "refId": "A",
+          "legendFormat": "{{job}} {{stage}} {{kind}} {{outcome}} {{route}}"
+        }
+      ]
+    }
+  ]
+}
